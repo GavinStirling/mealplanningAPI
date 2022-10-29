@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using MealPlanningAPI.Data;
+using MealPlanningAPI.Services.Users;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContextPool<UserDbContext>(options =>
+{
+    // options.UseSqlServer(builder.Configuration.GetConnectionString("MealPlanningDbConnect"));
+});
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
