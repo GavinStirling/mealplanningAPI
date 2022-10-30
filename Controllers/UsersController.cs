@@ -1,20 +1,79 @@
-﻿using MealPlanningAPI.Services.Users;
+﻿using MealPlanningAPI.Data.Users;
+using MealPlanningAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MealPlanningAPI.Controllers
 {
-    public class UsersController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UsersController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly IUserData userData;
 
-        public UsersController(UserService userService)
+        public UsersController(IUserData userData)
         {
-            _userService = userService;
+            this.userData = userData;
         }
 
-        public IActionResult Index()
+        // GET: api/Users
+        [HttpGet]
+        public JsonResult GetAllUsers()
         {
-            return View(_userService.getAll());
+            var results = userData.GetAllUsers();
+            if (results == null)
+            {
+                return new JsonResult(NotFound());
+            }
+            return new JsonResult(Ok(results));
+        }
+
+        // GET: api/Users/{id}
+        [HttpGet("{id}")]
+        public JsonResult GetUserById(int id)
+        {
+            var results = userData.GetUserById(id);
+            if (results == null)
+            {
+                return new JsonResult(NotFound());
+            }
+            return new JsonResult(Ok(results));
+        }
+
+        // PUT: api/Users
+        [HttpPut]
+        public JsonResult UpdateUser(User user)
+        {
+            var existingUser = userData.GetUserById(user.UserID);
+            if (existingUser == null)
+            {
+                return new JsonResult(NotFound());
+            }
+            userData.UpdateUser(user);
+            userData.Commit();
+            return new JsonResult(Ok(user));
+        }
+
+        // POST: api/Users
+        [HttpPost]
+        public JsonResult CreateUser(User user)
+        {
+            userData.AddUser(user);
+            userData.Commit();
+            return new JsonResult(Ok(user));
+        }
+
+        // DELETE: api/Users
+        [HttpDelete("{id}")]
+        public JsonResult DeleteUser(int id)
+        {
+            var user = userData.GetUserById(id);
+            if (user == null)
+            {
+                return new JsonResult(NotFound());
+            }
+            userData.DeleteUser(id);
+            userData.Commit();
+            return new JsonResult(Ok(user));
         }
     }
 }

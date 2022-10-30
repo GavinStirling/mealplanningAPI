@@ -1,6 +1,9 @@
-using Microsoft.EntityFrameworkCore;
 using MealPlanningAPI.Data;
-using MealPlanningAPI.Services.Users;
+using MealPlanningAPI.Data.Groups;
+using MealPlanningAPI.Data.Households;
+using MealPlanningAPI.Data.Recipes;
+using MealPlanningAPI.Data.Users;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +13,19 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContextPool<UserDbContext>(options =>
+
+// DbContexts
+builder.Services.AddDbContextPool<MealPlanningDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MealPlanningDbConnect")));
+builder.Services.AddScoped<IUserData, UserData>();
+builder.Services.AddScoped<IRecipeData, RecipeData>();
+builder.Services.AddScoped<IHouseholdData, HouseholdData>();
+builder.Services.AddScoped<IGroupData, GroupData>();
+
+// Creating a CORS policy
+builder.Services.AddCors(options =>
 {
-    // options.UseSqlServer(builder.Configuration.GetConnectionString("MealPlanningDbConnect"));
+    options.AddPolicy("AllowAll", b => b.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
 });
-builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
