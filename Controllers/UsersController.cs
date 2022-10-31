@@ -39,25 +39,23 @@ namespace MealPlanningAPI.Controllers
             return new JsonResult(Ok(results));
         }
 
-        // PUT: api/Users
-        [HttpPut]
-        public JsonResult UpdateUser(User user)
-        {
-            var existingUser = userData.GetUserById(user.UserID);
-            if (existingUser == null)
-            {
-                return new JsonResult(NotFound());
-            }
-            userData.UpdateUser(user);
-            userData.Commit();
-            return new JsonResult(Ok(user));
-        }
-
         // POST: api/Users
         [HttpPost]
-        public JsonResult CreateUser(User user)
+        public JsonResult CreateUpdateUser(User user)
         {
-            userData.AddUser(user);
+            if (user.UserID == 0)
+            {
+                userData.AddUser(user);
+            }
+            else
+            {
+                var existingUser = userData.GetUserById(user.UserID);
+                if (existingUser == null)
+                {
+                    return new JsonResult(NotFound());
+                }
+                userData.UpdateUser(user);
+            }
             userData.Commit();
             return new JsonResult(Ok(user));
         }
