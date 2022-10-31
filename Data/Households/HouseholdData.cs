@@ -43,8 +43,8 @@ namespace MealPlanningAPI.Data.Households
 
         public void UpdateHousehold(Household household)
         {
-            var entity = _context.houses.Attach(household);
-            entity.State = EntityState.Modified;
+            DeleteHousehold(household.HouseholdId);
+            AddHousehold(household);
         }
     }
 }

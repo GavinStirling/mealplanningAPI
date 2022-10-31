@@ -41,25 +41,19 @@ namespace MealPlanningAPI.Controllers
             return new JsonResult(Ok(results));
         }
 
-        // PUT: api/Households
-        [HttpPut]
-        public JsonResult UpdateHousehold(Household household)
-        {
-            var existingRecipe = householdData.GetHouseholdById(household.HouseholdId);
-            if (existingRecipe == null)
-            {
-                return new JsonResult(NotFound());
-            }
-            householdData.UpdateHousehold(household);
-            householdData.Commit();
-            return new JsonResult(Ok(household));
-        }
-
         // POST: api/Households
         [HttpPost]
-        public JsonResult CreateHousehold(Household household)
+        public JsonResult CreateUpdateHousehold(Household household)
         {
-            householdData.AddHousehold(household);
+            var existingHousehold = householdData.GetHouseholdById(household.HouseholdId);  
+            if (existingHousehold == null)
+            {
+                householdData.AddHousehold(household);
+            }
+            else
+            {
+                householdData.UpdateHousehold(household);
+            }
             householdData.Commit();
             return new JsonResult(Ok(household));
         }

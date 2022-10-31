@@ -45,8 +45,6 @@ namespace MealPlanningAPI.Data.Users
         {
             DeleteUser(user.UserID);
             AddUser(user);
-            //var entity = _context.users.Update(user);
-            //entity.State = EntityState.Modified;
         }
     }
 }

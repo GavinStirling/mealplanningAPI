@@ -43,8 +43,8 @@ namespace MealPlanningAPI.Data.Groups
 
         public void UpdateGroup(Group group)
         {
-            var entity = _context.groups.Attach(group);
-            entity.State = EntityState.Modified;
+            DeleteGroup(group.GroupID);
+            AddGroup(group);
         }
     }
 }

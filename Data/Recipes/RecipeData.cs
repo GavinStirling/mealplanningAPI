@@ -43,8 +43,8 @@ namespace MealPlanningAPI.Data.Recipes
 
         public void UpdateRecipe(Recipe recipe)
         {
-            var entity = _context.recipes.Attach(recipe);
-            entity.State = EntityState.Modified;
+            DeleteRecipe(recipe.RecipeID);
+            AddRecipe(recipe);    
         }
     }
 }

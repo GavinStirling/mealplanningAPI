@@ -1,5 +1,6 @@
 ﻿using MealPlanningAPI.Data.Groups;
 using MealPlanningAPI.Data.Recipes;
+using MealPlanningAPI.Data.Users;
 using MealPlanningAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,25 +41,19 @@ namespace MealPlanningAPI.Controllers
             return new JsonResult(Ok(results));
         }
 
-        // PUT: api/Groups
-        [HttpPut]
-        public JsonResult UpdateGroup(Group group)
-        {
-            var existingGroup = groupData.GetGroupById(group.GroupID);
-            if (existingGroup == null)
-            {
-                return new JsonResult(NotFound());
-            }
-            groupData.UpdateGroup(group);
-            groupData.Commit();
-            return new JsonResult(Ok(group));
-        }
-
         // POST: api/Groups
         [HttpPost]
-        public JsonResult CreateGroup(Group group)
+        public JsonResult CreateUpdateGroup(Group group)
         {
-            groupData.AddGroup(group);
+            var existingUser = groupData.GetGroupById(group.GroupID);
+            if (existingUser == null)
+            {
+                groupData.AddGroup(group);
+            }
+            else
+            {
+                groupData.UpdateGroup(group);
+            }
             groupData.Commit();
             return new JsonResult(Ok(group));
         }

@@ -43,17 +43,13 @@ namespace MealPlanningAPI.Controllers
         [HttpPost]
         public JsonResult CreateUpdateUser(User user)
         {
-            if (user.UserID == 0)
+            var existingUser = userData.GetUserById(user.UserID);
+            if (existingUser == null)
             {
                 userData.AddUser(user);
             }
             else
             {
-                var existingUser = userData.GetUserById(user.UserID);
-                if (existingUser == null)
-                {
-                    return new JsonResult(NotFound());
-                }
                 userData.UpdateUser(user);
             }
             userData.Commit();

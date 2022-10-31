@@ -41,25 +41,19 @@ namespace MealPlanningAPI.Controllers
             return new JsonResult(Ok(results));
         }
 
-        // PUT: api/Recipes
-        [HttpPut]
-        public JsonResult UpdateRecipe(Recipe recipe)
+        // POST: api/Recipes
+        [HttpPost]
+        public JsonResult CreateUpdateRecipe(Recipe recipe)
         {
             var existingRecipe = recipeData.GetRecipeById(recipe.RecipeID);
             if (existingRecipe == null)
             {
-                return new JsonResult(NotFound());
+                recipeData.AddRecipe(recipe);
             }
-            recipeData.UpdateRecipe(recipe);
-            recipeData.Commit();
-            return new JsonResult(Ok(recipe));
-        }
-
-        // POST: api/Recipes
-        [HttpPost]
-        public JsonResult CreateRecipe(Recipe recipe)
-        {
-            recipeData.AddRecipe(recipe);
+            else
+            {
+                recipeData.UpdateRecipe(recipe);
+            }
             recipeData.Commit();
             return new JsonResult(Ok(recipe));
         }
