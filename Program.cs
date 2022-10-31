@@ -14,6 +14,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.ConfigureSwaggerGen(setup =>
+{
+    setup.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Meal Planning",
+        Version = "v1"
+    });
+});
+
 // DbContexts
 builder.Services.AddDbContextPool<MealPlanningDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MealPlanningDbConnect")));
 builder.Services.AddScoped<IUserData, UserData>();
