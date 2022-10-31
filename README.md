@@ -3,7 +3,7 @@
 This repository is the source code for a RESTful API for a Meal Planning application.
 
 ## Deployment
-The current plan is to deploy this API using Azure services.
+The API is deployed using Azure at https://mealplanning.azurewebsites.net/api.
 
 ## Database
 This API communicates with an Azure SQL database which is located on an Azure Sql Server. The name of the database is "mealplanning".
@@ -44,3 +44,11 @@ This table stores all the informmation of the groups that are created. Each grou
 
 ## Endpoints
 Summary of the endpoints for the API.
+
+### /users
+
+### /recipes
+
+### /households
+
+### /groups
